@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import authRoutes from './routes/auth.routes';
 import dotenv from "dotenv";
-
+import blogRoutes from "./routes/blog.routes";
 
 dotenv.config();
 
@@ -18,6 +18,8 @@ app.use(
   "/api/auth",  
   authRoutes
 );
+
+app.use("/api/blogs", blogRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`App is live on port ${port}`));

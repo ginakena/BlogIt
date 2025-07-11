@@ -110,3 +110,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: "Internal Server Error." });
   }
 };
+
+export const logoutUser = async (_req: Request, res: Response): Promise<void> => {
+  res.status(200).json({
+    message: "Kwaheri😓"
+  });
+};
+
