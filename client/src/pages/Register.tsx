@@ -6,11 +6,13 @@ import {
   Box,
   Link as MuiLink,
   Grid,
+  Alert,
 } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const GridItem = Grid as React.ElementType;
 
@@ -23,29 +25,46 @@ interface User {
 }
 
 const Register = () => {
- const [firstName, setFirstName ] = useState("")
- const [lastName, setLastName ] = useState("")
- const [email, setEmail ] = useState("")
- const [userName, setUserName ] = useState("")
- const [password, setPassword ] = useState("")
- const [confirmPassword, setConfirmPassword ] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formError, setFormError] = useState("");
+  const navigate = useNavigate();
 
-const { isPending, mutate } = useMutation({
-  mutationKey: ["register-user"],  
-  mutationFn: async (newUser: User) => {
-    const response = await axios.post("http://localhost:4000/api/auth/register", newUser)
-      console.log(response);
-      return response.data
+  const { isPending, mutate } = useMutation({
+    mutationKey: ["register-user"],
+    mutationFn: async (newUser: User) => {
+      const response = await axios.post(
+        "http://localhost:4000/api/auth/register",
+        newUser
+      );
+
+      return response.data;
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        setFormError(error.response?.data.message);
+      } else {
+        setFormError("something went wrong. Try again Later.");
+      }
+    },
+    onSuccess: () => {
+      navigate("/login");
+    },
+  });
+
+  function handleSignUp() {
+    setFormError("");
+    if (password !== confirmPassword) {
+      setFormError("password and confirm password should match");
+      return;
+    }
+    const newUser = { firstName, lastName, email, userName, password };
+    mutate(newUser);
   }
-})
-
-
-function handleSignUp() {
-  const newUser = { firstName, lastName, email, userName, password } 
-  console.log(newUser);
-  mutate(newUser)
-}  
-  
 
   return (
     <Container maxWidth="sm">
@@ -56,13 +75,25 @@ function handleSignUp() {
         <Typography variant="body1" color="text.secondary" mb={3}>
           Create a free BlogIt account
         </Typography>
-
+        {formError && <Alert severity="error">{formError}</Alert>}
         <Grid container spacing={2}>
           <GridItem xs={6}>
-            <TextField label="First Name" fullWidth required value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
+            <TextField
+              label="First Name"
+              fullWidth
+              required
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
           </GridItem>
           <GridItem xs={6}>
-            <TextField label="Last Name" fullWidth required value={lastName} onChange={(e) => setLastName(e.target.value)} />
+            <TextField
+              label="Last Name"
+              fullWidth
+              required
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
           </GridItem>
         </Grid>
 
@@ -71,28 +102,43 @@ function handleSignUp() {
           fullWidth
           margin="normal"
           required
-          value={userName} onChange={(e) => setUserName(e.target.value)}
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
         />
         <TextField
           label="Email"
           fullWidth
           margin="normal"
-          required value={email} onChange={(e) => setEmail(e.target.value)}
-        />  
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <TextField
           label="Password"
           type="password"
           fullWidth
           margin="normal"
-          required value={password} onChange={(e) => setPassword(e.target.value)}
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <TextField label="Confirm Password" type="password" fullWidth margin="normal" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+        <TextField
+          label="Confirm Password"
+          type="password"
+          fullWidth
+          margin="normal"
+          required
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
         <Button
           variant="contained"
           color="primary"
           fullWidth
           size="large"
-          sx={{ mt: 2 }} onClick={handleSignUp} loading={isPending}
+          sx={{ mt: 2 }}
+          onClick={handleSignUp}
+          loading={isPending}
         >
           Register
         </Button>
@@ -109,4 +155,3 @@ function handleSignUp() {
 };
 
 export default Register;
-
