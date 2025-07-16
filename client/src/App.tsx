@@ -8,6 +8,7 @@ import Blogs from "./pages/Blogs";
 import Profile from "./pages/Profile";
 import CreateBlog from "./pages/createBlog";
 import ProtectedRoute from "./components/ProtectedRoute";
+import BlogDetails from "./pages/BlogDetails";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/blogs/:id" element={<BlogDetails />} />
+
           <Route
             path="/profile"
             element={

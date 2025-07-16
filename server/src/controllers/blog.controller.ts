@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 // GET /api/blogs
 export const getAllBlogs = async (
-  req: Request,
+  _req: Request,
   res: Response
 ): Promise<void> => {
   try {

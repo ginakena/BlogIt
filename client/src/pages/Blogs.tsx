@@ -33,7 +33,7 @@ const Blogs = () => {
     queryKey: ["blogs"],
     queryFn: async () => {
       const res = await axiosInstance.get("/api/blogs");
-      return res.data.blogs as Blog[];
+       return res.data as Blog[];
     },
   });
 

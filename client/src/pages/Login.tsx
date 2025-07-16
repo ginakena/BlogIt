@@ -88,7 +88,7 @@ const Login = () => {
           color="primary"
           fullWidth
           size="large"
-          sx={{ mt: 2 }} onClick={handleLogin} loading={isPending}
+          sx={{ mt: 2, color: "#113F67", fontFamily: "Winky Rough" }} onClick={handleLogin} loading={isPending}
         >
           Login
         </Button>

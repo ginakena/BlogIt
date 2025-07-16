@@ -106,9 +106,9 @@ const Profile = () => {
         </Grid>
         <Button
           variant="contained"
-          sx={{ mt: 3 }}
+          sx={{ mt: 3, color: "#113F67", fontFamily: "Winky Rough" }}
           onClick={() => updateProfile()}
-          disabled={isPending}
+          disabled={isPending} 
         >
           Update Profile
         </Button>

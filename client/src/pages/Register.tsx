@@ -136,7 +136,7 @@ const Register = () => {
           color="primary"
           fullWidth
           size="large"
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, color: "#113F67", fontFamily: "Winky Rough" }}
           onClick={handleSignUp}
           loading={isPending}
         >
