@@ -5,7 +5,10 @@ import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
+export const registerUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { firstName, lastName, userName, email, password } = req.body;
 
   if (!firstName || !lastName || !userName || !email || !password) {
@@ -55,8 +58,8 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       },
     });
   } catch (error) {
-    console.error("Registration Error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("error ", error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -94,8 +97,15 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       { expiresIn: "24h" }
     );
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // true in production (uses HTTPS)
+      sameSite: "lax", // or "strict" for more protection
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
     res.status(200).json({
-      message: "Login successful.",
+      message: "User Login successful.",
       token,
       user: {
         id: user.id,
@@ -106,14 +116,17 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       },
     });
   } catch (error) {
-    console.error("Login Error:", error);
-    res.status(500).json({ message: "Internal Server Error." });
+    console.error("Error logging in", error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
 export const logoutUser = async (_req: Request, res: Response): Promise<void> => {
-  res.status(200).json({
-    message: "Kwaheri😓"
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
   });
-};
 
+  res.status(200).json({ message: "Kwaheri😊" });
+};

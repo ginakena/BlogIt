@@ -6,7 +6,7 @@ import {
   updateBlog,
   deleteBlog,
 } from "../controllers/blog.controller";
-import { authenticateToken } from "../middleware/authMiddleware";
+import { verifyToken } from "../middleware/authMiddleware";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ const router = Router();
 router.get("/", getAllBlogs);
 
 
-router.post("/", authenticateToken, createBlog);
+router.post("/", verifyToken, createBlog);
 
 
 router.get("/:blogId", getBlogById);
@@ -25,3 +25,4 @@ router.patch("/:blogId", updateBlog);
 router.delete("/:blogId", deleteBlog);
 
 export default router;
+

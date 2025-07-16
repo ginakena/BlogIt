@@ -15,19 +15,19 @@ const Header = () => {
         <Box>
           {user ? (
             <>
-              <Button component={Link} to="/blogs" color="primary" sx={{ mr: 2 }}>
+              <Button component={Link} to="/blogs" color="primary" sx={{ mr: 2, color: "#113F67", fontFamily: "Winky Rough" }}>
                 Posts
               </Button>
-              <Button component={Link} to="/blogs/create" color="primary" sx={{ mr: 2 }}>
+              <Button component={Link} to="/blogs/create" color="primary" sx={{ mr: 2, color: "#113F67", fontFamily: "Winky Rough" }}>
                 New Blog
               </Button>
-              <Button component={Link} to="/profile" color="primary" sx={{ mr: 2 }}>
+              <Button component={Link} to="/profile" color="primary" sx={{ mr: 2, color: "#113F67", fontFamily: "Winky Rough" }}>
                 Profile
               </Button>
               <Typography variant="body1" sx={{ mr: 2 }} display="inline">
                 Welcome back, {user.firstName}
               </Typography>
-              <Button onClick={logoutUser} color="secondary" variant="outlined">
+              <Button onClick={logoutUser} color="secondary" variant="contained">
                 Logout
               </Button>
             </>

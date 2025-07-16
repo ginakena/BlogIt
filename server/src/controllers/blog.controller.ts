@@ -25,14 +25,13 @@ export const getAllBlogs = async (
 };
 
 // POST /api/blogs
-export const createBlog = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { title, synopsis, content, featuredImg, authorId } = req.body;
+export const createBlog = async (req: Request, res: Response): Promise<void> => {
+  const { title, synopsis, content, featuredImg } = req.body;
+  const user = (req as any).user;
 
-  if (!title || !synopsis || !content || !featuredImg || !authorId) {
+  if (!title || !synopsis || !content || !featuredImg) {
     res.status(400).json({ message: "All fields are required" });
+    return;
   }
 
   try {
@@ -42,15 +41,16 @@ export const createBlog = async (
         synopsis,
         content,
         featuredImg,
-        authorId: parseInt(authorId),
+        authorId: user.id,
       },
     });
     res.status(201).json(blog);
   } catch (error) {
-    console.error("Create Blog Error:", error);
+    console.error("eerror creating blog:", error);
     res.status(500).json({ message: "Failed to create blog" });
   }
 };
+
 
 // GET /api/blogs/:blogId
 export const getBlogById = async (
@@ -73,7 +73,7 @@ export const getBlogById = async (
 
     res.status(200).json(blog);
   } catch (error) {
-    console.error("Get Blog By ID Error:", error);
+    console.error("something went wrong", error);
     res.status(500).json({ message: "Failed to fetch blog" });
   }
 };
@@ -94,7 +94,7 @@ export const updateBlog = async (
 
     res.status(200).json(updated);
   } catch (error) {
-    console.error("Update Blog Error:", error);
+    console.error("Usomwthing went wrong:", error);
     res.status(500).json({ message: "Failed to update blog" });
   }
 };
@@ -114,7 +114,7 @@ export const deleteBlog = async (
 
     res.status(200).json({ message: "Blog deleted successfully", blog });
   } catch (error) {
-    console.error("Delete Blog Error:", error);
+    console.error("something went wrong", error);
     res.status(500).json({ message: "Failed to delete blog" });
   }
 };

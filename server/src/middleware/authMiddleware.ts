@@ -1,28 +1,25 @@
-import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
-dotenv.config();
 
-interface AuthenticatedRequest extends Request {
-  user?: { id: number };
-}
-
-export const authenticateToken = (
-  req: AuthenticatedRequest,
+export const verifyToken = (
+  req: Request,
   res: Response,
   next: NextFunction
-) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader?.split(" ")[1];
+): void => {
+  const token = req.cookies?.token;
 
   if (!token) {
-    return res.status(401).json({ message: "Access token missing" });
+    res.status(401).json({ message: "Unauthorized." });
+    return; 
   }
 
-  jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
-    if (err) return res.status(403).json({ message: "Invalid token" });
-    req.user = user as { id: number };
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
+    (req as any).user = decoded;
     next();
-  });
+  } catch (err) {
+    res.status(403).json({ message: "Invalid. " });
+    return; 
+  }
 };
