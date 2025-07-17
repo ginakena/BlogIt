@@ -36,7 +36,7 @@ const Register = () => {
   const { isPending, mutate } = useMutation({
     mutationKey: ["register-user"],
     mutationFn: async (newUser: User) => {
-      const response = await axios.post("http://localhost:4000/api/auth/register", newUser);
+      const response = await axios.post("https://blogit-jx83.onrender.com/api/auth/register", newUser);
       return response.data;
     },
     onError: (error: unknown) => {
