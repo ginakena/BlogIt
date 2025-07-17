@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import axiosInstance from "../api/axios";
 
 const GridItem = Grid as React.ElementType;
 
@@ -36,7 +37,7 @@ const Register = () => {
   const { isPending, mutate } = useMutation({
     mutationKey: ["register-user"],
     mutationFn: async (newUser: User) => {
-      const response = await axios.post("https://blogit-jx83.onrender.com/api/auth/register", newUser);
+      const response = await axiosInstance.post("/api/auth/register", newUser);
       return response.data;
     },
     onError: (error: unknown) => {
