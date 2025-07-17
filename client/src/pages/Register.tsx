@@ -9,10 +9,9 @@ import {
   Alert,
 } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const GridItem = Grid as React.ElementType;
 
@@ -37,18 +36,19 @@ const Register = () => {
   const { isPending, mutate } = useMutation({
     mutationKey: ["register-user"],
     mutationFn: async (newUser: User) => {
-      const response = await axios.post(
-        "http://localhost:4000/api/auth/register",
-        newUser
-      );
-
+      const response = await axios.post("http://localhost:4000/api/auth/register", newUser);
       return response.data;
     },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        setFormError(error.response?.data.message);
+    onError: (error: unknown) => {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as any).response?.data?.message === "string"
+      ) {
+        setFormError((error as any).response.data.message);
       } else {
-        setFormError("something went wrong. Try again Later.");
+        setFormError("Something went wrong. Try again later.");
       }
     },
     onSuccess: () => {
@@ -59,7 +59,7 @@ const Register = () => {
   function handleSignUp() {
     setFormError("");
     if (password !== confirmPassword) {
-      setFormError("password and confirm password should match");
+      setFormError("Password and confirm password should match");
       return;
     }
     const newUser = { firstName, lastName, email, userName, password };
@@ -69,7 +69,7 @@ const Register = () => {
   return (
     <Container maxWidth="sm">
       <Box sx={{ mt: 10, p: 4, boxShadow: 3, borderRadius: 2 }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{fontFamily: "Winky Rough", fontSize: "30px"}}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ fontFamily: "Winky Rough", fontSize: "30px" }}>
           Sign Up
         </Typography>
         <Typography variant="body1" color="text.secondary" mb={3}>
@@ -131,6 +131,7 @@ const Register = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
+
         <Button
           variant="contained"
           color="primary"
@@ -138,9 +139,9 @@ const Register = () => {
           size="large"
           sx={{ mt: 2, color: "#113F67", fontFamily: "Winky Rough" }}
           onClick={handleSignUp}
-          loading={isPending}
+          disabled={isPending}
         >
-          Register
+          {isPending ? "Registering..." : "Register"}
         </Button>
 
         <Typography variant="body2" textAlign="center" mt={2}>

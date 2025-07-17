@@ -10,7 +10,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import axiosInstance from "../api/axios";
 import { useUserStore } from "../store/userStore";
 import { setToken } from "../utils/token";
@@ -30,30 +29,30 @@ const Login = () => {
   const { isPending, mutate } = useMutation({
     mutationKey: ["login-user"],
     mutationFn: async (loginDetails: LoginDetails) => {
-      const response = await axiosInstance.post(
-        "/api/auth/login",
-        loginDetails
-      );
-
+      const response = await axiosInstance.post("/api/auth/login", loginDetails);
       return response.data;
     },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        setFormError(error.response?.data.message || "Login failed.");
+    onError: (error: unknown) => {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as any).response?.data?.message === "string"
+      ) {
+        setFormError((error as any).response.data.message);
       } else {
         setFormError("Something went wrong. Try again later.");
       }
     },
-    onSuccess: (data) => {
-      setToken(data.token);          
-      setUser(data.user);           
-      navigate("/blogs");            
+    onSuccess: (data: any) => {
+      setToken(data.token);
+      setUser(data.user);
+      navigate("/blogs");
     },
   });
 
   function handleLogin() {
     const payload: any = { password };
-
     if (emailOrUsername.includes("@")) {
       payload.email = emailOrUsername;
     } else {
@@ -66,7 +65,7 @@ const Login = () => {
   return (
     <Container maxWidth="sm">
       <Box sx={{ mt: 10, p: 4, boxShadow: 3, borderRadius: 2 }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{fontFamily: "Winky Rough", fontSize: "30px"}} >
+        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ fontFamily: "Winky Rough", fontSize: "30px" }}>
           Login
         </Typography>
         <Typography variant="body1" color="text.secondary" mb={3}>
@@ -98,9 +97,9 @@ const Login = () => {
           size="large"
           sx={{ mt: 2, color: "#113F67", fontFamily: "Winky Rough" }}
           onClick={handleLogin}
-          loading={isPending}
+          disabled={isPending}
         >
-          Login
+          {isPending ? "Logging in..." : "Login"}
         </Button>
 
         <Typography variant="body2" textAlign="center" mt={2}>
