@@ -39,7 +39,7 @@ const Blogs = () => {
 
   return (
     <Container sx={{ mt: 8 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
+      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ fontFamily: "Winky Rough", fontSize: "35px" }} >
         Latest Blogs
       </Typography>
 

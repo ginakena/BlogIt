@@ -51,7 +51,7 @@ const CreateBlog = () => {
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-blog"],
     mutationFn: async () => {
-      if (!user) throw new Error("User not authenticated");
+      if (!user) throw new Error("Not authenticated");
 
       const payload = {
         title,
@@ -146,7 +146,7 @@ const CreateBlog = () => {
           )}
 
           <TextField
-            label="Content (Markdown supported)"
+            label="Content "
             fullWidth
             multiline
             rows={10}

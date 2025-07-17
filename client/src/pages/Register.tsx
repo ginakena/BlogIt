@@ -69,7 +69,7 @@ const Register = () => {
   return (
     <Container maxWidth="sm">
       <Box sx={{ mt: 10, p: 4, boxShadow: 3, borderRadius: 2 }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
+        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{fontFamily: "Winky Rough", fontSize: "30px"}}>
           Sign Up
         </Typography>
         <Typography variant="body1" color="text.secondary" mb={3}>

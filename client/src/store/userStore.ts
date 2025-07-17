@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { type StateCreator } from "zustand";
 import { persist } from "zustand/middleware";
+import { removeToken } from "../utils/token";
 
 interface User {
   firstName: string;
@@ -15,14 +15,18 @@ interface UserStore {
   logoutUser: () => void;
 }
 
-const userStore: StateCreator<UserStore> = (set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  logoutUser: () => set({ user: null }),
-});
-
 export const useUserStore = create<UserStore>()(
-  persist(userStore, {
-    name: "user-store", // key in localStorage
-  })
+  persist(
+    (set) => ({
+      user: null,
+      setUser: (user) => set({ user }),
+      logoutUser: () => {
+        removeToken();
+        set({ user: null });
+      },
+    }),
+    {
+      name: "user-store",
+    }
+  )
 );

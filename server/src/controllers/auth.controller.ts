@@ -39,7 +39,6 @@ export const registerUser = async (
         password: hashedPassword,
       },
     });
-
     const token = jwt.sign(
       { id: user.id, email: user.email, userName: user.userName },
       process.env.JWT_SECRET as string,
@@ -97,13 +96,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       { expiresIn: "24h" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // true in production (uses HTTPS)
-      sameSite: "lax", // or "strict" for more protection
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
-
     res.status(200).json({
       message: "User Login successful.",
       token,
@@ -121,7 +113,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const logoutUser = async (_req: Request, res: Response): Promise<void> => {
+export const logoutUser = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
