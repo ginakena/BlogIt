@@ -104,14 +104,16 @@ const CreateBlog = () => {
 
         <form onSubmit={handleSubmit}>
           <TextField
-            label="Title"            
+            label="Title"
+            fullWidth
             margin="normal"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
           <TextField
-            label="Synopsis"             
+            label="Synopsis"
+            fullWidth
             margin="normal"
             value={synopsis}
             onChange={(e) => setSynopsis(e.target.value)}
