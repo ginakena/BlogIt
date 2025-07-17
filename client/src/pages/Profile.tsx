@@ -10,7 +10,7 @@ import {
   CardActions,
   Stack,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "../api/axios";
 import { useUserStore } from "../store/userStore";

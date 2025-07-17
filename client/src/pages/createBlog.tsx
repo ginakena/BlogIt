@@ -93,7 +93,7 @@ const CreateBlog = () => {
   return (
     <Container maxWidth="md">
       <Box sx={{ mt: 10 }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
+        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{fontFamily: "Winky Rough", fontSize: "30px"}} >
           Create a New Blog
         </Typography>
         <Typography variant="body1" color="text.secondary" mb={3}>
@@ -139,7 +139,7 @@ const CreateBlog = () => {
               <img
                 src={featuredImg}
                 alt="Preview"
-                width="100%"
+                width="50%"
                 style={{ borderRadius: 8 }}
               />
             </Box>
