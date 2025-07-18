@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/HomePage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Header from "./components/Header";
+// import Header from "./components/Header";
 import Blogs from "./pages/Blogs";
 import Profile from "./pages/Profile";
 import CreateBlog from "./pages/createBlog";
@@ -15,8 +15,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <Header />
+      <Router>        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
